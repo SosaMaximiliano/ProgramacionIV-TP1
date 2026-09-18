@@ -1,0 +1,39 @@
+<div class="detalle-pelicula d-flex justify-content-center">
+  @if (pelicula) {
+    <div class="m-3 p-3 border border-warning">
+      <img [src]="pelicula.imagen" [alt]="pelicula.nombre" />
+
+      <h1>{{ pelicula.nombre }}</h1>
+
+      <p>{{ pelicula.sinopsis }}</p>
+
+      <p>Duración: {{ pelicula.duracion }} minutos</p>
+
+      <p>Género: {{ pelicula.genero }}</p>
+
+      <p>Edad: +{{ pelicula.clasificacionEdad }}</p>
+
+      <button routerLink="/peliculas">Volver a películas</button>
+    </div>
+  }
+</div>
+
+@if (funciones.length > 0) {
+  <h3 class="d-flex justify-content-center m-4">Funciones</h3>
+  @for (funcion of funciones; track $index) {
+    <div class="detalle-pelicula d-flex justify-content-center m-3">
+      <div>
+        <p>Fecha: {{ funcion.fecha }}</p>
+        <p>Hora: {{ funcion.hora }}</p>
+        <p>Sala: {{ funcion.salaId }}</p>
+      </div>
+      <div>
+        <button (click)="seleccionarFuncion(funcion)" class="m-3">Seleccionar</button>
+      </div>
+    </div>
+  }
+} @else {
+  <div class="d-flex justify-content-center">
+    <p>No hay funciones disponibles.</p>
+  </div>
+}

@@ -1,0 +1,23 @@
+<article class="pelicula-card">
+  <div class="pelicula-info">
+    <img [src]="peliculaRecibida.imagen" [alt]="peliculaRecibida.nombre" />
+
+    <h2>{{ peliculaRecibida.nombre }}</h2>
+
+    <p>{{ peliculaRecibida.sinopsis }}</p>
+
+    <p>Duración: {{ peliculaRecibida.duracion }} minutos</p>
+
+    <p>Género: {{ peliculaRecibida.genero }}</p>
+
+    <p>Edad: +{{ peliculaRecibida.clasificacionEdad }}</p>
+
+    <p>Fecha de estreno: {{ peliculaRecibida.fechaEstreno }}</p>
+
+    <p>En cartelera: {{ peliculaRecibida.estaDisponible ? 'Si' : 'No' }}</p>
+
+    <div>
+      <button (click)="emitirSeleccion()">Ver detalle</button>
+    </div>
+  </div>
+</article>

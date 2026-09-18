@@ -1,0 +1,31 @@
+.pelicula-card {
+  width: 250px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  overflow: hidden;
+  background: white;
+}
+
+.pelicula-card img {
+  width: 100%;
+  height: 350px;
+  object-fit: cover;
+}
+
+.pelicula-info {
+  padding: 15px;
+}
+
+.pelicula-info h2 {
+  margin-top: 0;
+}
+
+.pelicula-info p {
+  margin: 5px 0;
+}
+
+.pelicula-info button {
+  margin-top: 10px;
+  padding: 8px 15px;
+  cursor: pointer;
+}

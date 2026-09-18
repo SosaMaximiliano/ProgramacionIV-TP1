@@ -1,0 +1,26 @@
+<h1>Seleccionar butaca</h1>
+
+<p>Función: {{ funcionId }}</p>
+
+<div class="butacas">
+  @for (butaca of butacas; track butaca.id) {
+    <button
+      [disabled]="estaOcupada(butaca.id)"
+      [class.seleccionada]="estaSeleccionada(butaca.id)"
+      (click)="seleccionarButaca(butaca)"
+    >
+      {{ butaca.fila }}{{ butaca.numero }}
+    </button>
+  }
+</div>
+
+@if (butacasSeleccionadas.length > 0) {
+  <div>
+    <h3>Butacas seleccionadas</h3>
+
+    @for (butaca of butacasSeleccionadas; track butaca.id) {
+      <span> {{ butaca.fila }}{{ butaca.numero }} </span>
+    }
+  </div>
+  <p>Cantidad de butacas: {{ butacasSeleccionadas.length }}</p>
+}

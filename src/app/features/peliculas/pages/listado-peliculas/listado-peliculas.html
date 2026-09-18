@@ -1,0 +1,25 @@
+<div class="container-fluid">
+  <div class="busqueda m-3">
+    <input
+      id="busqueda"
+      type="text"
+      [(ngModel)]="busqueda"
+      placeholder="Buscar"
+      (input)="filtrarPeliculas()"
+    />
+  </div>
+  @if (peliculasFiltradas.length > 0) {
+    <div class="peliculas-grid">
+      @for (pelicula of peliculasFiltradas; track pelicula.id) {
+        <app-pelicula-card
+          [peliculaRecibida]="pelicula"
+          (peliculaSeleccionada)="seleccionarPelicula($event)"
+        ></app-pelicula-card>
+      }
+    </div>
+  } @else {
+    <div class="d-flex">
+      <p class="text-center">No se encontraron películas.</p>
+    </div>
+  }
+</div>
