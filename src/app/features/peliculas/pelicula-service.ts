@@ -47,4 +47,8 @@ export class PeliculaService {
   obtenerPeliculaPorId(id: number): Pelicula | undefined {
     return this.peliculas.find((p) => p.id === id);
   }
+
+  obtenerNombrePeliculaPorId(id: number): string | undefined {
+    return this.peliculas.find((p) => p.id === id)?.nombre;
+  }
 }

@@ -7,6 +7,7 @@ import { Funcion } from '../../core/models/funcion.model';
 import { Butaca } from '../../core/models/butaca.model';
 import { Sala } from '../../core/models/sala.model';
 import { ButacaFuncionService } from '../funciones/butaca-funcion.service';
+import { PeliculaService } from '../peliculas/pelicula-service';
 
 @Component({
   imports: [],
@@ -21,6 +22,9 @@ export class Compra {
   sala?: Sala;
   butacasOcupadas: number[] = [];
   butacasSeleccionadas: Butaca[] = [];
+  peliculaId!: number;
+  nombrePelicula: string | undefined = '';
+  detalle: any = null;
 
   constructor(
     private route: ActivatedRoute,
@@ -28,6 +32,7 @@ export class Compra {
     private salaService: SalaService,
     private butacaService: ButacaService,
     private butacaFuncionService: ButacaFuncionService,
+    private peliculaService: PeliculaService,
   ) {}
 
   ngOnInit(): void {
@@ -38,6 +43,9 @@ export class Compra {
     this.funcion = this.funcionService.obtenerFunciones().find((f) => f.id === this.funcionId);
     if (!this.funcion) return;
 
+    //Obtengo el id de la película.
+    this.peliculaId = this.funcion.peliculaId;
+
     //Obtengo la sala a partir de la función
     this.sala = this.salaService.obtenerSalaPorId(this.funcion.salaId);
     if (!this.sala) return;
@@ -47,6 +55,9 @@ export class Compra {
 
     //Obtengo las butacas ocupadas
     this.butacasOcupadas = this.butacaFuncionService.obtenerButacasOcupadas(this.funcionId);
+
+    //Obtengo el nombre de la película
+    this.nombrePelicula = this.peliculaService.obtenerNombrePeliculaPorId(this.peliculaId);
   }
 
   estaOcupada(butacaId: number): boolean {
@@ -63,10 +74,27 @@ export class Compra {
     } else {
       this.butacasSeleccionadas.push(butaca);
     }
-    console.log(this.butacasSeleccionadas);
   }
 
   estaSeleccionada(butacaId: number): boolean {
     return this.butacasSeleccionadas.some((b) => b.id === butacaId);
+  }
+
+  continuarCompra() {
+    console.log('Funcion', this.funcionId);
+    console.log('Butacas seleccionadas: ', this.butacasSeleccionadas);
+  }
+
+  detalleCompra() {
+    this.detalle = {
+      pelicula: this.nombrePelicula,
+      fecha: this.funcion?.fecha,
+      hora: this.funcion?.hora,
+      butacas: this.butacasSeleccionadas.map((b) => `${b.fila}${b.numero}`).join(', '),
+    };
+
+    const detalleJSON = JSON.stringify(this.detalle, null, 2);
+    console.log(detalleJSON);
+    return this.detalle;
   }
 }

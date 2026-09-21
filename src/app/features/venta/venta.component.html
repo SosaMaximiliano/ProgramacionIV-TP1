@@ -1,0 +1,10 @@
+@if (compra.detalle) {
+  <div class="container-fluid d-flex justify-content-center">
+    <div class="detalle-funcion">
+      <p>{{ nombrePelicula }}</p>
+      <p>{{ funcion?.fecha }}</p>
+      <p>{{ funcion?.hora }}</p>
+      <p>{{ butacasSeleccionadas.map((b) => `${b.fila}${b.numero}`).join(', ') }}</p>
+    </div>
+  </div>
+}
