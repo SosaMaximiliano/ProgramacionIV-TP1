@@ -1,5 +1,3 @@
----
-
 # Documento de Especificación de Requerimientos de Software (ERS)
 
 **Proyecto:** Sistema de Gestión y Venta de Entradas para Cine
