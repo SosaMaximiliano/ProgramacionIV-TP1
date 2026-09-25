@@ -1,8 +1,8 @@
+import { FuncionService } from './../../../../servicios/funcion.service';
 import { Component } from '@angular/core';
 import { ActivatedRoute, RouterLink, Router } from '@angular/router';
-import { PeliculaService } from '../../pelicula-service';
+import { PeliculaService } from '../../../../servicios/pelicula-service';
 import { Pelicula } from '../../../../core/models/pelicula.model';
-import { FuncionService } from '../../../funciones/funcion.service';
 import { Funcion } from '../../../../core/models/funcion.model';
 
 @Component({

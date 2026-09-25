@@ -4,4 +4,5 @@ export interface Funcion {
   salaId: number;
   fecha: string;
   hora: string;
+  precioEntrada: number;
 }

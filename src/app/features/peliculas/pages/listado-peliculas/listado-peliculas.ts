@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Pelicula } from '../../../../core/models/pelicula.model';
 import { PeliculaCard } from '../../components/pelicula-card/pelicula-card';
 import { Router } from '@angular/router';
-import { PeliculaService } from '../../pelicula-service';
+import { PeliculaService } from '../../../../servicios/pelicula-service';
 import { FormsModule } from '@angular/forms';
 
 @Component({

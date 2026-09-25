@@ -1,60 +1,199 @@
-# CineApp
+---
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.1.6.
+# Documento de Especificación de Requerimientos de Software (ERS)
 
-## Development server
+**Proyecto:** Sistema de Gestión y Venta de Entradas para Cine
 
-To start a local development server, run:
+**Materia:** Programación IV - TP 1
 
-```bash
-ng serve
-```
+---
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## 1. Módulo de Autenticación y Perfil de Usuario
 
-## Code scaffolding
+### 1.1. Tipos de Usuarios / Roles
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+1. **Usuario Anónimo (Cliente Invitado):** Puede explorar la cartelera y realizar compras directo sin registrarse.
 
-```bash
-ng generate component component-name
-```
+2. **Usuario Registrado (Cliente):** Disfruta de beneficios como cupones de bienvenida, programa de puntos, crédito por cancelaciones e historial de compras/reseñas.
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+3. **Empleado:** Encargado de la validación y control de entradas en puerta y despacho en el Candy Bar.
 
-```bash
-ng generate --help
-```
+4. **Administrador:** Control total sobre películas, funciones, productos, precios, cupones, usuarios y métricas.
 
-## Building
+### 1.2. Registro e Información de Perfil
 
-To build the project run:
+- Campos obligatorios de registro: Email, nombre, apellido, fecha de nacimiento, tipo de sangre, color de ojos y cantidad de días de vacaciones al año.
 
-```bash
-ng build
-```
+- **Beneficio de Registro:** Asignación automática de un cupón de descuento para la primera compra (porcentaje configurable por el administrador).
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+- Panel de Perfil de Usuario:
 
-## Running unit tests
+- Saldo de **puntos acumulados** e historial de canjes.
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+- Saldo de **crédito en cuenta** acumulado por cancelaciones.
 
-```bash
-ng test
-```
+- Configuración y gestión de datos personales.
 
-## Running end-to-end tests
+---
 
-For end-to-end (e2e) testing, run:
+## 2. Módulo de Catálogo de Películas y Cartelera
 
-```bash
-ng e2e
-```
+### 2.1. Gestión de Películas (Administración)
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+- Cada película debe contar con:
 
-## Additional Resources
+- Nombre, sinopsis, imagen/póster y duración exacta.
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
-# ProgramacionIV-TP1
+- Lista de géneros asociados (puede tener varios).
+
+- Restricción de edad (Apta para todo público, +13, +18).
+
+### 2.2. Visualización y Filtros en Cartelera (Cliente)
+
+- **Destacados:** Visualización de las 3 películas más vendidas en la pantalla principal.
+
+- **Buscador y Filtros:** Búsqueda dinámica por nombre y filtrado multi-género.
+
+- **Formatos e Idioma:** Filtros o indicadores de formato (2D, 3D, 4D, 5D) e idioma (Castellano o Subtitulada).
+
+- **Sección "Próximamente":**
+- Muestra de películas con estreno programado para las próximas semanas.
+
+- Botón para **activar alertas/notificaciones** cuando las entradas salgan a la venta.
+
+- **Sección "Mis Películas":** Historial visual con imágenes, fechas pasadas y calificaciones asignadas por el usuario.
+
+### 2.3. Reseñas y Calificaciones
+
+- Puntuación promedio por estrellas visible en la ficha de cada película.
+
+- Módulo de comentarios cortos y calificaciones individuales visibles antes de comprar las entradas.
+
+---
+
+## 3. Módulo de Configuración de Salas, Funciones y Asientos
+
+### 3.1. Estructura de las Salas
+
+- Matriz general de 20 filas identicadas con letras (A a T).
+
+- Distribución física por columnas:
+
+- **Filas generales:** 3 bloques/columnas (4, 20 y 4 butacas).
+
+- **Filas J y K (Butacas Accesibles):** 2, 10 y 2 adaptadas para personas con discapacidad. Resaltadas de forma visual distintiva.
+
+- **Filas R, S y T (Butacas VIP):** Ubicadas en las últimas 3 filas. Tienen un valor diferencial elevado y una marcación visual destacada.
+
+### 3.2. Asignación Automática de Funciones
+
+- Configuración de proyecciones indicando días de la semana y horarios fijados.
+
+- **Algoritmo de asignación automática de salas:** Debe asignar sala disponible evitando superposiciones de horario.
+
+- **Margen operativo obligatoria:** Garantizar un mínimo de 30 minutos libres tras finalizar una función antes de iniciar la siguiente en la misma sala.
+
+---
+
+## 4. Módulo de Venta de Entradas y Candy Bar
+
+### 4.1. Proceso de Selección y Mapa en Tiempo Real
+
+- **Mapa interactivo de butacas:** Actualización en tiempo real de ocupación para evitar selecciones duplicadas de asientos de forma simultánea.
+
+- **Control de edad:** Bloqueo de venta para menores de 13 o 18 años según la calificación de la película. Advertencia explícita en el ticket solicitando acompañamiento de un adulto.
+
+### 4.2. Módulo de Candy Bar y Combos
+
+- **Productos:** Creación, categorización (bebidas, pochoclos, golosinas) y asignación de precios.
+
+- **Combos Especiales:** Creación de paquetes (Entrada + Candy) a precio fijo.
+
+- Adquisición unificada en el mismo flujo de compra de la entrada.
+
+### 4.3. Cupones, Preventas y Medios de Pago
+
+- **Cupones de Descuento:**
+- Descuento personalizable para la primera compra de usuarios registrados.
+
+- Cupones segmentados por reglas (ej. mayores de 50 años).
+
+- **Sistema de Preventa:**
+- Apertura de venta 7 días antes del estreno a precio promocional configurable por película.
+
+- Retorno automático al precio estándar finalizado el plazo.
+
+- **Medios de Pago y Crédito:** Combinación de pago convencional con saldo/crédito acumulado en cuenta.
+
+### 4.4. Generación de Comprobantes
+
+- Generación de PDF con resumen de compra, funciones, ubicaciones, ítems de Candy Bar y un **código QR único unificado**.
+
+---
+
+## 5. Módulo de Cancelaciones y Programa de Fidelización
+
+### 5.1. Cancelación de Compras
+
+- Permitido hasta **2 horas antes** del inicio de la función.
+
+- **Devolución:** Saldo acreditado directamente en la cuenta del usuario para futuras compras (no se realiza reintegro monetario).
+
+### 5.2. Programa de Puntos (Fidelización)
+
+- **Acumulación:** 1 peso gastado = 1 punto acumulado (exclusivo para usuarios registrados).
+
+- **Canje:** Catálogo de recompensas configurables (entradas gratis o productos del candy por cantidad de puntos).
+
+- Puntos personales e intransferibles.
+
+---
+
+## 6. Módulo de Empleados y Validación de QRs
+
+### 6.1. Validación en Puerta y Candy Bar
+
+- Interfaz para escaneo de códigos QR o ingreso manual de código alfanumérico.
+
+- Cambio de estado automático del ticket a "Validado" / "Entregado" para anular reutilizaciones.
+
+---
+
+## 7. Módulo de Administración, Reportes y Auditoría
+
+### 7.1. Reportes y Métricas
+
+- Módulo estadístico en tiempo real de facturación diaria y volumen de entradas vendidas.
+
+- Gráficos comparativos de películas más vistas (semanal/mensual) y productos más vendidos del Candy Bar.
+
+- Exportación de informes en formatos **PDF** y **Excel**.
+
+### 7.2. Registro de Actividades (Audit Log)
+
+- Auditoría detallada con marca de tiempo (fecha y hora) e identificación del usuario para:
+- Creación y modificación de funciones y precios.
+
+- Validaciones de QR realizadas por empleados.
+
+- Cambios administrativos en la plataforma.
+
+---
+
+## 8. Requerimientos No Funcionales y UI/UX
+
+1. **Diseño Visual e Interfaz (UI/UX):**
+
+- Estilo visual propio, cuidado e intuitivo.
+
+- Optimización en la entrada de datos: componentes eficientes para fechas y horas evitando calendarios complejos o menús desplegables extensos.
+
+2. **Tecnología y Persistencia:**
+
+- Desarrollo del frontend en **Angular** incorporando arquitectura **PWA** (Progressive Web App).
+
+- Integración de backend/base de datos con **Supabase**.
+
+3. **Despliegue y Código:**
+
+- Aplicación alojada con URL funcional, repositorio público en GitHub y documentación en `README.md` detallando arquitectura y decisiones técnicas.

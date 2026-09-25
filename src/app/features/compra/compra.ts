@@ -1,13 +1,14 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { FuncionService } from '../funciones/funcion.service';
-import { SalaService } from '../funciones/sala.service';
-import { ButacaService } from '../funciones/butaca.service';
+import { FuncionService } from '../../servicios/funcion.service';
+import { SalaService } from '../../servicios/sala.service';
+import { ButacaService } from '../../servicios/butaca.service';
 import { Funcion } from '../../core/models/funcion.model';
 import { Butaca } from '../../core/models/butaca.model';
 import { Sala } from '../../core/models/sala.model';
-import { ButacaFuncionService } from '../funciones/butaca-funcion.service';
-import { PeliculaService } from '../peliculas/pelicula-service';
+import { ButacaFuncionService } from '../../servicios/butaca-funcion.service';
+import { PeliculaService } from '../../servicios/pelicula-service';
+import { EntradaService } from './entrada.service';
 
 @Component({
   imports: [],
@@ -33,6 +34,7 @@ export class Compra {
     private butacaService: ButacaService,
     private butacaFuncionService: ButacaFuncionService,
     private peliculaService: PeliculaService,
+    private entradaService: EntradaService,
   ) {}
 
   ngOnInit(): void {
@@ -83,6 +85,7 @@ export class Compra {
   continuarCompra() {
     console.log('Funcion', this.funcionId);
     console.log('Butacas seleccionadas: ', this.butacasSeleccionadas);
+    console.log(this.entradaService.crearEntrada(2, 15, 8, 5000, 25));
   }
 
   detalleCompra() {

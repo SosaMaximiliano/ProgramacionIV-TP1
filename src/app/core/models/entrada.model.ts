@@ -1,7 +1,4 @@
-import { Funcion } from './funcion.model';
-import { ButacaFuncion } from './butaca-funcion.model';
-
-enum EstadoEntrada {
+export enum EstadoEntrada {
   Disponible = 1,
   Emitida = 2,
   Utilizada = 3,
