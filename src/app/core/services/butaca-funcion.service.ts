@@ -1,5 +1,5 @@
 import { Service } from '@angular/core';
-import { ButacaFuncion } from '../core/models/butaca-funcion.model';
+import { ButacaFuncion } from '../models/butaca-funcion.model';
 
 @Service()
 export class ButacaFuncionService {
@@ -25,5 +25,17 @@ export class ButacaFuncionService {
   //con el número de butaca ocupada
   obtenerButacasOcupadas(funcionId: number) {
     return this.butacasOcupadas.filter((b) => b.funcionId === funcionId).map((b) => b.butacaId);
+  }
+
+  ocuparButacas(funcionId: number, butacaIds: number[]): void {
+    for (const butacaId of butacaIds) {
+      const yaOcupada = this.butacasOcupadas.some(
+        (b) => b.funcionId === funcionId && b.butacaId === butacaId,
+      );
+
+      if (!yaOcupada) {
+        this.butacasOcupadas.push({ funcionId, butacaId });
+      }
+    }
   }
 }

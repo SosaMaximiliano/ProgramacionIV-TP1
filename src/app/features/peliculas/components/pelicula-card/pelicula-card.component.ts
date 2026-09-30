@@ -4,8 +4,8 @@ import { Pelicula } from '../../../../core/models/pelicula.model';
 @Component({
   imports: [],
   selector: 'app-pelicula-card',
-  styleUrl: './pelicula-card.css',
-  templateUrl: './pelicula-card.html',
+  styleUrl: './pelicula-card.component.css',
+  templateUrl: './pelicula-card.component.html',
 })
 export class PeliculaCard {
   //Recibo un objeto Pelicula a traves del HTML

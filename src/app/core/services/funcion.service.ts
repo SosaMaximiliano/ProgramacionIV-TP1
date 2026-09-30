@@ -1,5 +1,5 @@
 import { Service } from '@angular/core';
-import { Funcion } from '../core/models/funcion.model';
+import { Funcion } from '../models/funcion.model';
 
 @Service()
 export class FuncionService {

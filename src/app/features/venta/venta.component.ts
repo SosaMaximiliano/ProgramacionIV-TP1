@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Compra } from '../compra/compra';
+import { Compra } from '../compra/compra.component';
 
 @Component({
   imports: [],
@@ -7,4 +7,4 @@ import { Compra } from '../compra/compra';
   styleUrl: './venta.component.css',
   templateUrl: './venta.component.html',
 })
-export class VentaComponent {}
+export class Venta {}

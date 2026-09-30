@@ -1,5 +1,5 @@
 import { Service } from '@angular/core';
-import { Sala } from '../core/models/sala.model';
+import { Sala } from '../models/sala.model';
 
 @Service()
 export class SalaService {

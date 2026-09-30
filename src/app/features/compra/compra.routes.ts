@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { Compra } from './compra';
+import { Compra } from './compra.component';
 
 export const compraRoutes: Routes = [
   {

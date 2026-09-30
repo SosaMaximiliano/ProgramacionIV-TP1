@@ -4,14 +4,14 @@ export const PELICULAS_ROUTES: Routes = [
   {
     path: '',
     loadComponent: () =>
-      import('./pages/listado-peliculas/listado-peliculas').then((m) => m.ListadoPeliculas),
+      import('./pages/listado-peliculas/listado-peliculas.component').then((m) => m.ListadoPeliculas),
     pathMatch: 'full',
   },
 
   {
     path: ':id',
     loadComponent: () =>
-      import('./pages/detalle-pelicula/detalle-pelicula').then((m) => m.DetallePelicula),
+      import('./pages/detalle-pelicula/detalle-pelicula.component').then((m) => m.DetallePelicula),
   },
 
   //   {

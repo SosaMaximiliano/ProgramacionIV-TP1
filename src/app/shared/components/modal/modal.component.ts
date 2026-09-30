@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 @Component({
   imports: [],
   selector: 'app-modal',
-  styleUrl: './modal.css',
-  templateUrl: './modal.html',
+  styleUrl: './modal.component.css',
+  templateUrl: './modal.component.html',
 })
 export class Modal {}

@@ -25,3 +25,30 @@
   <p>Cantidad de butacas: {{ butacasSeleccionadas.length }}</p>
   <button (click)="continuarCompra()">Continuar</button>
 }
+
+@if (entradas.length > 0) {
+  <section>
+    <h2>Resumen de compra</h2>
+    <p>Pelicula: {{ nombrePelicula }}</p>
+    <p>Función: {{ funcion?.fecha }} - {{ funcion?.hora }}</p>
+
+    <h3>Entradas</h3>
+    <ul>
+      @for (e of entradas; track e.id) {
+        <li>
+          Fila {{ e.fila }}, asiento {{ e.asiento }} -
+          {{ e.precio | currency: 'ARS' }}
+        </li>
+      }
+    </ul>
+  </section>
+  <p>Total: {{ ventaCreada?.precioFinal | currency: 'ARS' }}</p>
+}
+
+@if (ventaCreada && !ventaCreada.estaPagado) {
+  <button (click)="confirmarPago()">Confirmar pago</button>
+}
+
+@if (ventaCreada?.estaPagado) {
+  <p>Pago confirmado. Tus entradas fueron emitidas.</p>
+}

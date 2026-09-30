@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { Pelicula } from '../../../../core/models/pelicula.model';
-import { PeliculaCard } from '../../components/pelicula-card/pelicula-card';
+import { PeliculaCard } from '../../components/pelicula-card/pelicula-card.component';
 import { Router } from '@angular/router';
-import { PeliculaService } from '../../../../servicios/pelicula-service';
+import { PeliculaService } from '../../../../core/services/pelicula.service';
 import { FormsModule } from '@angular/forms';
 
 @Component({
   imports: [PeliculaCard, FormsModule],
   selector: 'app-listado-peliculas',
-  styleUrl: './listado-peliculas.css',
-  templateUrl: './listado-peliculas.html',
+  styleUrl: './listado-peliculas.component.css',
+  templateUrl: './listado-peliculas.component.html',
 })
 export class ListadoPeliculas implements OnInit {
   peliculas: Pelicula[] = [];

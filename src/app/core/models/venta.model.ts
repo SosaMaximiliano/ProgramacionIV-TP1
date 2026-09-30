@@ -1,7 +1,7 @@
 import { Entrada } from './entrada.model';
 import { ItemVenta } from './item-venta.model';
 
-enum FormaPago {
+export enum FormaPago {
   Efectivo = 1,
   Debito = 2,
   Credito = 3,
@@ -12,9 +12,7 @@ export interface Venta {
   id: number;
   clienteId: number;
   fechaVenta: string;
-  items: ItemVenta[];
   subtotal: number;
-  impuestos: number;
   precioFinal: number;
   formaPago: FormaPago;
   estaPagado: boolean;

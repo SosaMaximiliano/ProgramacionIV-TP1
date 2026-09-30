@@ -1,20 +1,24 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { FuncionService } from '../../servicios/funcion.service';
-import { SalaService } from '../../servicios/sala.service';
-import { ButacaService } from '../../servicios/butaca.service';
+import { FuncionService } from '../../core/services/funcion.service';
+import { SalaService } from '../../core/services/sala.service';
+import { ButacaService } from '../../core/services/butaca.service';
 import { Funcion } from '../../core/models/funcion.model';
 import { Butaca } from '../../core/models/butaca.model';
 import { Sala } from '../../core/models/sala.model';
-import { ButacaFuncionService } from '../../servicios/butaca-funcion.service';
-import { PeliculaService } from '../../servicios/pelicula-service';
+import { ButacaFuncionService } from '../../core/services/butaca-funcion.service';
+import { PeliculaService } from '../../core/services/pelicula.service';
 import { EntradaService } from './entrada.service';
+import { Entrada, EstadoEntrada } from '../../core/models/entrada.model';
+import { CurrencyPipe } from '@angular/common';
+import { Venta, FormaPago } from '../../core/models/venta.model';
+import { VentaService } from '../../core/services/venta.service';
 
 @Component({
-  imports: [],
+  imports: [CurrencyPipe],
   selector: 'app-compra',
-  styleUrl: './compra.css',
-  templateUrl: './compra.html',
+  styleUrl: './compra.component.css',
+  templateUrl: './compra.component.html',
 })
 export class Compra {
   funcionId!: number;
@@ -26,6 +30,8 @@ export class Compra {
   peliculaId!: number;
   nombrePelicula: string | undefined = '';
   detalle: any = null;
+  entradas: Entrada[] = [];
+  ventaCreada: Venta | null = null;
 
   constructor(
     private route: ActivatedRoute,
@@ -35,6 +41,7 @@ export class Compra {
     private butacaFuncionService: ButacaFuncionService,
     private peliculaService: PeliculaService,
     private entradaService: EntradaService,
+    private ventaService: VentaService,
   ) {}
 
   ngOnInit(): void {
@@ -83,9 +90,32 @@ export class Compra {
   }
 
   continuarCompra() {
-    console.log('Funcion', this.funcionId);
-    console.log('Butacas seleccionadas: ', this.butacasSeleccionadas);
-    console.log(this.entradaService.crearEntrada(2, 15, 8, 5000, 25));
+    if (this.ventaCreada || !this.funcion || this.butacasSeleccionadas.length === 0) {
+      return;
+    }
+
+    const clienteId = 2;
+    const precio = this.funcion?.precioEntrada;
+    this.entradas = this.butacasSeleccionadas.map((b) =>
+      this.entradaService.crearEntrada(
+        this.nombrePelicula || 'Película',
+        b.fila,
+        b.numero,
+        clienteId,
+        precio,
+        0,
+      ),
+    );
+
+    this.ventaCreada = this.ventaService.crearVenta(clienteId, this.entradas, FormaPago.Efectivo);
+
+    this.entradas.forEach((e) => {
+      e.ventaId = this.ventaCreada!.id;
+    });
+  }
+
+  get totalCompra(): number {
+    return this.entradas.reduce((total, entrada) => total + entrada.precio, 0);
   }
 
   detalleCompra() {
@@ -99,5 +129,24 @@ export class Compra {
     const detalleJSON = JSON.stringify(this.detalle, null, 2);
     console.log(detalleJSON);
     return this.detalle;
+  }
+
+  confirmarPago(): void {
+    if (!this.ventaCreada || this.ventaCreada.estaPagado) {
+      return;
+    }
+
+    this.ventaCreada.estaPagado = true;
+
+    this.entradas.forEach((e) => {
+      e.estadoEntrada = EstadoEntrada.Emitida;
+    });
+
+    this.butacaFuncionService.ocuparButacas(
+      this.funcionId,
+      this.butacasSeleccionadas.map((b) => b.id),
+    );
+
+    this.butacasOcupadas = this.butacaFuncionService.obtenerButacasOcupadas(this.funcionId);
   }
 }

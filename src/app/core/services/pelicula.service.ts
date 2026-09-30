@@ -1,5 +1,5 @@
-import { Service } from '@angular/core';
-import { Pelicula } from '../core/models/pelicula.model';
+import { Service, inject } from '@angular/core';
+import { Pelicula } from '../models/pelicula.model';
 
 @Service()
 export class PeliculaService {

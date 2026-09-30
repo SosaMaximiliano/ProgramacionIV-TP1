@@ -1,6 +1,6 @@
 import { Service } from '@angular/core';
-import { Butaca } from '../core/models/butaca.model';
-import { Sala } from '../core/models/sala.model';
+import { Butaca } from '../models/butaca.model';
+import { Sala } from '../models/sala.model';
 
 @Service()
 export class ButacaService {

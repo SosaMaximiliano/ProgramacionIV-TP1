@@ -1,15 +1,15 @@
-import { FuncionService } from './../../../../servicios/funcion.service';
+import { FuncionService } from '../../../../core/services/funcion.service';
 import { Component } from '@angular/core';
 import { ActivatedRoute, RouterLink, Router } from '@angular/router';
-import { PeliculaService } from '../../../../servicios/pelicula-service';
+import { PeliculaService } from '../../../../core/services/pelicula.service';
 import { Pelicula } from '../../../../core/models/pelicula.model';
 import { Funcion } from '../../../../core/models/funcion.model';
 
 @Component({
   imports: [RouterLink],
   selector: 'app-detalle-pelicula',
-  styleUrl: './detalle-pelicula.css',
-  templateUrl: './detalle-pelicula.html',
+  styleUrl: './detalle-pelicula.component.css',
+  templateUrl: './detalle-pelicula.component.html',
 })
 export class DetallePelicula {
   pelicula?: Pelicula;

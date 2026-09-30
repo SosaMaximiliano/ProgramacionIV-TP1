@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Loading } from './loading';
+import { Loading } from './loading.component';
 
 describe('Loading', () => {
   let component: Loading;

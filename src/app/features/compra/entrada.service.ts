@@ -6,16 +6,20 @@ export class EntradaService {
   private entradas: Entrada[] = [];
 
   crearEntrada(
-    funcionId: number,
-    butacaId: number,
+    // funcionId: number,
+    // butacaId: number,
+    pelicula: string,
+    fila: string,
+    asiento: number,
     clienteId: number,
     precio: number,
     ventaId: number,
   ): Entrada {
     const entrada = {
       id: this.entradas.length + 1,
-      funcionId,
-      butacaId,
+      pelicula,
+      fila,
+      asiento,
       clienteId,
       precio,
       ventaId,

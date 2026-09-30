@@ -8,15 +8,15 @@ export const routes: Routes = [
   },
   {
     path: 'inicio',
-    loadComponent: () => import('./features/home/home').then((m) => m.Home),
+    loadComponent: () => import('./features/home/home.component').then((m) => m.Home),
   },
   {
     path: 'login',
-    loadComponent: () => import('./features/auth/login/login').then((m) => m.Login),
+    loadComponent: () => import('./features/auth/login/login.component').then((m) => m.Login),
   },
   {
     path: 'registro',
-    loadComponent: () => import('./features/auth/registro/registro').then((m) => m.Registro),
+    loadComponent: () => import('./features/auth/registro/registro.component').then((m) => m.Registro),
   },
   {
     path: 'peliculas',
@@ -29,7 +29,7 @@ export const routes: Routes = [
   },
   {
     path: 'error',
-    loadComponent: () => import('./features/error/error').then((m) => m.Error),
+    loadComponent: () => import('./features/error/error.component').then((m) => m.Error),
   },
   {
     path: '**',

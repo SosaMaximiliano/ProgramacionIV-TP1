@@ -1,5 +1,32 @@
 # Documento de Especificación de Requerimientos de Software (ERS)
 
+## Guía del proyecto
+
+La aplicación Angular vive en `src/`. Dentro de `src/app`, el código se organiza por responsabilidad:
+
+| Ubicación | Contenido |
+| --- | --- |
+| `core/models/` | Modelos y tipos centrales del dominio (películas, funciones, salas, butacas, ventas y entradas). |
+| `core/services/` | Servicios compartidos para consultar y gestionar esos datos. |
+| `features/` | Pantallas y flujos agrupados por funcionalidad: `auth`, `peliculas`, `compra`, `venta`, `home` y `error`. |
+| `features/peliculas/pages/` | Vistas de cartelera y detalle de película. |
+| `features/peliculas/components/` | Componentes propios de la funcionalidad de películas, como la tarjeta. |
+| `shared/components/` | Componentes reutilizables en distintas funcionalidades: navegación, pie, carga y modal. |
+| `public/` | Recursos estáticos servidos tal cual, como el favicon. |
+| `documentation/` | Documentación técnica HTML generada con Compodoc; no es código de la aplicación. |
+
+### Convención de nombres
+
+- Los componentes usan el patrón `<nombre>.component.ts`, `<nombre>.component.html` y `<nombre>.component.css`.
+- Las pruebas quedan junto al componente, en `<nombre>.spec.ts`.
+- Los servicios usan `<nombre>.service.ts`; los modelos usan `<nombre>.model.ts`.
+- Las rutas de una funcionalidad usan `<nombre>.routes.ts`.
+- Los nombres de carpetas y archivos se escriben en minúsculas y con guiones para separar palabras.
+
+Para agregar una pantalla, ubicala en la carpeta de su funcionalidad dentro de `features/`. Si su servicio o modelo será compartido por varias funcionalidades, colocalo en `core/`; si solo se usa en una, mantenelo junto a esa funcionalidad.
+
+## Documento de Especificación de Requerimientos de Software (ERS)
+
 **Proyecto:** Sistema de Gestión y Venta de Entradas para Cine
 
 **Materia:** Programación IV - TP 1

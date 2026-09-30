@@ -7,9 +7,12 @@ export enum EstadoEntrada {
 
 export interface Entrada {
   id: number;
-  funcionId: number;
-  butacaId: number;
+  // funcionId: number;
+  // butacaId: number;
   clienteId: number;
+  pelicula: string;
+  fila: string;
+  asiento: number;
   precio: number;
   ventaId: number;
   estadoEntrada: EstadoEntrada;

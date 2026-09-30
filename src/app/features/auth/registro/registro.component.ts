@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 @Component({
   imports: [],
   selector: 'app-registro',
-  styleUrl: './registro.css',
-  templateUrl: './registro.html',
+  styleUrl: './registro.component.css',
+  templateUrl: './registro.component.html',
 })
 export class Registro {}
