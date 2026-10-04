@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
   imports: [RouterLink],
@@ -7,4 +8,22 @@ import { RouterLink } from '@angular/router';
   styleUrl: './navbar.component.css',
   templateUrl: './navbar.component.html',
 })
-export class Navbar {}
+export class Navbar {
+  mensaje = '';
+
+  constructor(
+    public authService: AuthService,
+    private router: Router,
+  ) {}
+
+  async cerrarSesion(): Promise<void> {
+    this.mensaje = '';
+
+    try {
+      await this.authService.cerrarSesion();
+      await this.router.navigateByUrl('/inicio');
+    } catch {
+      this.mensaje = 'No se pudo cerrar la sesión.';
+    }
+  }
+}

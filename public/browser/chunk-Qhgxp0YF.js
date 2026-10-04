@@ -1,0 +1,1 @@
+var o=[{path:``,loadComponent:()=>import(`./chunk-8cmwmzVU.js`).then(t=>t.ListadoPeliculas),pathMatch:`full`},{path:`:id`,loadComponent:()=>import(`./chunk-CKgvV2cX.js`).then(t=>t.DetallePelicula)}];export{o as PELICULAS_ROUTES};

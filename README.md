@@ -25,6 +25,14 @@ La aplicación Angular vive en `src/`. Dentro de `src/app`, el código se organi
 
 Para agregar una pantalla, ubicala en la carpeta de su funcionalidad dentro de `features/`. Si su servicio o modelo será compartido por varias funcionalidades, colocalo en `core/`; si solo se usa en una, mantenelo junto a esa funcionalidad.
 
+### Conectar Supabase en desarrollo
+
+1. En el proyecto de Supabase, abrí **SQL Editor** y ejecutá, en orden, `supabase/migrations/20261001000000_create_profiles.sql`, `supabase/migrations/20261001000100_create_catalog.sql`, `supabase/migrations/20261001000200_update_sample_showtime_dates.sql` y `supabase/migrations/20261001000300_expand_catalog.sql`.
+2. En **Connect** o **Settings → API Keys**, copiá la Project URL y la Publishable key.
+3. Pegá esos valores en `src/environments/environment.ts` como `supabaseUrl` y `supabasePublishableKey`.
+
+La clave Publishable está pensada para el navegador; el acceso queda limitado por las políticas RLS de la base. No uses una clave Secret o `service_role` en Angular. El catálogo, las salas y las funciones ya se leen desde Supabase. Las ventas y el canje del descuento todavía necesitan migrarse para que el 20 % se aplique y consuma junto con el pago. Las imágenes locales de la cartelera están en `public/images/peliculas/`; sus fuentes se documentan en `public/images/peliculas/FUENTES.md`.
+
 ## Documento de Especificación de Requerimientos de Software (ERS)
 
 **Proyecto:** Sistema de Gestión y Venta de Entradas para Cine
@@ -106,7 +114,7 @@ Para agregar una pantalla, ubicala en la carpeta de su funcionalidad dentro de `
 
 - **Filas generales:** 3 bloques/columnas (4, 20 y 4 butacas).
 
-- **Filas J y K (Butacas Accesibles):** 2, 10 y 2 adaptadas para personas con discapacidad. Resaltadas de forma visual distintiva.
+- **Filas J y K reemplazadas por una única fila accesible:** Distribución de 2, 10 y 2 butacas, resaltada de forma visual distintiva.
 
 - **Filas R, S y T (Butacas VIP):** Ubicadas en las últimas 3 filas. Tienen un valor diferencial elevado y una marcación visual destacada.
 

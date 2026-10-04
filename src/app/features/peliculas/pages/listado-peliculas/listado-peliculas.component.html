@@ -1,16 +1,26 @@
 <div class="container-fluid">
-  <div class="busqueda m-3">
+  <section class="catalog-header">
+    <span class="section-kicker">UNA HISTORIA PARA CADA MOMENTO</span>
+    <h1>Cartelera</h1>
+    <p>Elegí tu próxima película y viví la experiencia en pantalla grande.</p>
+  </section>
+  <div class="busqueda">
+    <span class="search-icon" aria-hidden="true">⌕</span>
     <input
       id="busqueda"
       type="text"
-      [(ngModel)]="busqueda"
+      [ngModel]="busqueda()"
+      (ngModelChange)="busqueda.set($event)"
       placeholder="Buscar"
-      (input)="filtrarPeliculas()"
     />
   </div>
-  @if (peliculasFiltradas.length > 0) {
+  @if (cargando()) {
+    <div class="empty-state"><p>Cargando cartelera...</p></div>
+  } @else if (errorCarga()) {
+    <div class="empty-state"><p>{{ errorCarga() }}</p></div>
+  } @else if (peliculasFiltradas().length > 0) {
     <div class="peliculas-grid">
-      @for (pelicula of peliculasFiltradas; track pelicula.id) {
+      @for (pelicula of peliculasFiltradas(); track pelicula.id) {
         <app-pelicula-card
           [peliculaRecibida]="pelicula"
           (peliculaSeleccionada)="seleccionarPelicula($event)"
@@ -18,8 +28,9 @@
       }
     </div>
   } @else {
-    <div class="d-flex">
-      <p class="text-center">No se encontraron películas.</p>
+    <div class="empty-state">
+      <span aria-hidden="true">✧</span>
+      <p>No encontramos películas con esa búsqueda.</p>
     </div>
   }
 </div>

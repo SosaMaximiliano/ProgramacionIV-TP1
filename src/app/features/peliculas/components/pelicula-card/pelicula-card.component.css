@@ -1,31 +1,151 @@
 .pelicula-card {
-  width: 250px;
-  border: 1px solid #ddd;
-  border-radius: 10px;
+  min-width: 0;
+  border: 1px solid var(--cine-border);
+  border-radius: 15px;
   overflow: hidden;
-  background: white;
+  background: var(--cine-surface);
+  transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
 }
 
-.pelicula-card img {
+.pelicula-card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(242, 189, 85, 0.38);
+  box-shadow: 0 18px 38px rgba(0, 0, 0, 0.28);
+}
+
+.poster-wrap {
+  position: relative;
+  overflow: hidden;
+  background: var(--cine-surface-raised);
+}
+
+.poster-wrap img {
+  display: block;
   width: 100%;
-  height: 350px;
+  height: 310px;
   object-fit: cover;
+  transition: transform 350ms ease;
 }
 
-.pelicula-info {
-  padding: 15px;
+.pelicula-card:hover .poster-wrap img {
+  transform: scale(1.045);
 }
 
-.pelicula-info h2 {
-  margin-top: 0;
+.poster-wrap::after {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 35%;
+  background: linear-gradient(transparent, rgba(8, 10, 14, 0.7));
+  content: '';
 }
 
-.pelicula-info p {
-  margin: 5px 0;
+.availability,
+.age-rating {
+  position: absolute;
+  z-index: 1;
+  top: 12px;
+  padding: 6px 9px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 7px;
+  background: rgba(9, 11, 16, 0.8);
+  backdrop-filter: blur(10px);
 }
 
-.pelicula-info button {
-  margin-top: 10px;
-  padding: 8px 15px;
+.availability {
+  left: 12px;
+  color: var(--cine-gold-light);
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+}
+
+.availability.soon {
+  color: #c2cad6;
+}
+
+.age-rating {
+  right: 12px;
+  color: var(--cine-text);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.card-content {
+  padding: 17px;
+}
+
+.movie-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  color: var(--cine-muted);
+  font-size: 10px;
+}
+
+.movie-meta span:first-child {
+  color: var(--cine-gold);
+}
+
+.card-content h2 {
+  overflow: hidden;
+  margin: 11px 0 7px;
+  color: var(--cine-text);
+  font-family: 'Segoe UI', Arial, sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.movie-synopsis {
+  display: -webkit-box;
+  min-height: 39px;
+  overflow: hidden;
+  margin: 0 0 16px;
+  color: var(--cine-muted);
+  font-size: 11px;
+  line-height: 1.65;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.card-content button {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  border: 1px solid rgba(242, 189, 85, 0.32);
+  border-radius: 9px;
+  background: rgba(242, 189, 85, 0.07);
+  color: var(--cine-gold-light);
+  font-size: 11px;
+  font-weight: 700;
   cursor: pointer;
+  transition: background 150ms ease;
+}
+
+.card-content button:hover {
+  background: rgba(242, 189, 85, 0.15);
+}
+
+.card-content button span {
+  font-size: 16px;
+}
+
+@media (max-width: 600px) {
+  .poster-wrap img {
+    height: 230px;
+  }
+
+  .card-content {
+    padding: 12px;
+  }
+
+  .card-content h2 {
+    font-size: 14px;
+  }
 }

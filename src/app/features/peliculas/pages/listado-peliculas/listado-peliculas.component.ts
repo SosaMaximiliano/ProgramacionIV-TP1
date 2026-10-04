@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, computed, signal } from '@angular/core';
 import { Pelicula } from '../../../../core/models/pelicula.model';
 import { PeliculaCard } from '../../components/pelicula-card/pelicula-card.component';
 import { Router } from '@angular/router';
@@ -12,14 +12,33 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './listado-peliculas.component.html',
 })
 export class ListadoPeliculas implements OnInit {
-  peliculas: Pelicula[] = [];
-  peliculasFiltradas: Pelicula[] = [];
-  busqueda: string = '';
+  peliculas = signal<Pelicula[]>([]);
+  busqueda = signal('');
+  cargando = signal(true);
+  errorCarga = signal('');
+  peliculasFiltradas = computed(() => {
+    const texto = this.busqueda().trim().toLocaleLowerCase();
+
+    return this.peliculas().filter(
+      (pelicula) =>
+        pelicula.nombre.toLocaleLowerCase().includes(texto) ||
+        pelicula.genero.toLocaleLowerCase().includes(texto),
+    );
+  });
 
   //Al iniciar la app obtengo las peliculas desde el servicio
   ngOnInit(): void {
-    this.peliculas = this.peliculaService.obtenerPeliculas();
-    this.peliculasFiltradas = this.peliculas;
+    void this.cargarPeliculas();
+  }
+
+  private async cargarPeliculas(): Promise<void> {
+    try {
+      this.peliculas.set(await this.peliculaService.obtenerPeliculas());
+    } catch {
+      this.errorCarga.set('No pudimos cargar la cartelera. Revisá la conexión con Supabase.');
+    } finally {
+      this.cargando.set(false);
+    }
   }
 
   //Inyeccion de dependencias
@@ -34,11 +53,4 @@ export class ListadoPeliculas implements OnInit {
     this.router.navigate(['/peliculas', pelicula.id]);
   }
 
-  filtrarPeliculas() {
-    const texto = this.busqueda.toLowerCase();
-
-    this.peliculasFiltradas = this.peliculas.filter(
-      (p) => p.nombre.toLowerCase().includes(texto) || p.genero.toLowerCase().includes(texto),
-    );
-  }
 }

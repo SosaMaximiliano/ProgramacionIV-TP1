@@ -1,54 +1,91 @@
-<h1>Seleccionar butaca</h1>
+<main class="booking-page">
+  @if (errorCarga) {
+    <div class="payment-success">{{ errorCarga }}</div>
+  } @else {
+  <header class="booking-heading">
+    <span class="section-kicker">TU NOCHE DE CINE</span>
+    <h1>Elegí tus butacas</h1>
+    <p>Función #{{ funcionId }} <span aria-hidden="true">·</span> {{ nombrePelicula || 'Cine Cinéfila' }}</p>
+  </header>
 
-<p>Función: {{ funcionId }}</p>
+  <div class="booking-layout">
+    <section class="seat-panel">
+      <div class="screen-wrap">
+        <div class="screen"></div>
+        <span>PANTALLA</span>
+      </div>
 
-<div class="butacas">
-  @for (butaca of butacas; track butaca.id) {
-    <button
-      [disabled]="estaOcupada(butaca.id)"
-      [class.seleccionada]="estaSeleccionada(butaca.id)"
-      (click)="seleccionarButaca(butaca)"
-    >
-      {{ butaca.fila }}{{ butaca.numero }}
-    </button>
-  }
-</div>
+      <div class="seat-legend">
+        <span><i class="legend-seat available"></i> Disponible</span>
+        <span><i class="legend-seat selected"></i> Seleccionada</span>
+        <span><i class="legend-seat occupied"></i> Ocupada</span>
+      </div>
 
-@if (butacasSeleccionadas.length > 0) {
-  <div>
-    <h3>Butacas seleccionadas</h3>
+      <div class="seat-map">
+        @for (fila of filasButacas; track fila.letra) {
+          <div
+            class="seat-row"
+            [class.fila-accesible]="fila.tipo === 'accesible'"
+            [class.fila-vip]="fila.tipo === 'vip'"
+          >
+            <span class="seat-row-label">{{ fila.letra }}</span>
+            @for (bloque of fila.bloques; track $index) {
+              <div class="seat-block">
+                @for (butaca of bloque; track butaca.id) {
+                  <button
+                    class="butaca-seat"
+                    [disabled]="estaOcupada(butaca.id)"
+                    [class.seleccionada]="estaSeleccionada(butaca.id)"
+                    (click)="seleccionarButaca(butaca)"
+                    [attr.aria-label]="'Fila ' + butaca.fila + ', asiento ' + butaca.numero + ', ' + butaca.tipo"
+                  >
+                    {{ butaca.numero }}
+                  </button>
+                }
+              </div>
+            }
+          </div>
+        }
+      </div>
+    </section>
 
-    @for (butaca of butacasSeleccionadas; track butaca.id) {
-      <span> {{ butaca.fila }}{{ butaca.numero }} </span>
-    }
-  </div>
-  <p>Cantidad de butacas: {{ butacasSeleccionadas.length }}</p>
-  <button (click)="continuarCompra()">Continuar</button>
-}
-
-@if (entradas.length > 0) {
-  <section>
-    <h2>Resumen de compra</h2>
-    <p>Pelicula: {{ nombrePelicula }}</p>
-    <p>Función: {{ funcion?.fecha }} - {{ funcion?.hora }}</p>
-
-    <h3>Entradas</h3>
-    <ul>
-      @for (e of entradas; track e.id) {
-        <li>
-          Fila {{ e.fila }}, asiento {{ e.asiento }} -
-          {{ e.precio | currency: 'ARS' }}
-        </li>
+    <aside class="order-panel">
+      <span class="section-kicker">RESUMEN</span>
+      @if (butacasSeleccionadas().length > 0) {
+        <h2>Tus butacas</h2>
+        <div class="selected-seats">
+          @for (butaca of butacasSeleccionadas(); track butaca.id) {
+            <span>{{ butaca.fila }}{{ butaca.numero }}</span>
+          }
+        </div>
+        <p class="seat-count">{{ butacasSeleccionadas().length }} {{ butacasSeleccionadas().length === 1 ? 'entrada seleccionada' : 'entradas seleccionadas' }}</p>
+        <button class="primary-action" (click)="continuarCompra()">Continuar <span aria-hidden="true">→</span></button>
+      } @else {
+        <h2>Elegí tu lugar</h2>
+        <p class="order-hint">Seleccioná una o más butacas en el mapa para continuar.</p>
       }
-    </ul>
-  </section>
-  <p>Total: {{ ventaCreada?.precioFinal | currency: 'ARS' }}</p>
-}
 
-@if (ventaCreada && !ventaCreada.estaPagado) {
-  <button (click)="confirmarPago()">Confirmar pago</button>
-}
+      @if (entradas.length > 0) {
+        <div class="order-divider"></div>
+        <h2>Tu compra</h2>
+        <p class="order-movie">{{ nombrePelicula }}</p>
+        <p class="order-showtime">{{ funcion?.fecha }} · {{ funcion?.hora }}</p>
+        <ul class="ticket-list">
+          @for (e of entradas; track e.id) {
+            <li><span>Fila {{ e.fila }}, asiento {{ e.asiento }}</span><strong>{{ e.precio | currency: 'ARS' }}</strong></li>
+          }
+        </ul>
+        <div class="order-total"><span>Total</span><strong>{{ ventaCreada?.precioFinal | currency: 'ARS' }}</strong></div>
+      }
 
-@if (ventaCreada?.estaPagado) {
-  <p>Pago confirmado. Tus entradas fueron emitidas.</p>
-}
+      @if (ventaCreada && !ventaCreada.estaPagado) {
+        <button class="primary-action" (click)="confirmarPago()">Confirmar pago <span aria-hidden="true">→</span></button>
+      }
+
+      @if (ventaCreada?.estaPagado) {
+        <p class="payment-success"><span aria-hidden="true">✓</span> Pago confirmado. Tus entradas fueron emitidas.</p>
+      }
+    </aside>
+  </div>
+  }
+</main>

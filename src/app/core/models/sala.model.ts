@@ -2,5 +2,4 @@ export interface Sala {
   id: number;
   nombre: string;
   filas: number;
-  butacasPorFila: number;
 }

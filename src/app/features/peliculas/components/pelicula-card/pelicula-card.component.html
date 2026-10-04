@@ -1,15 +1,20 @@
 <article class="pelicula-card">
   <div class="pelicula-info">
-    <img [src]="peliculaRecibida.imagen" [alt]="peliculaRecibida.nombre" />
-    <h2>{{ peliculaRecibida.nombre }}</h2>
-    <p>{{ peliculaRecibida.sinopsis }}</p>
-    <p>Duración: {{ peliculaRecibida.duracion }} minutos</p>
-    <p>Género: {{ peliculaRecibida.genero }}</p>
-    <p>Edad: +{{ peliculaRecibida.clasificacionEdad }}</p>
-    <p>Fecha de estreno: {{ peliculaRecibida.fechaEstreno }}</p>
-    <p>En cartelera: {{ peliculaRecibida.estaDisponible ? 'Si' : 'No' }}</p>
-    <div>
-      <button (click)="emitirSeleccion()">Ver detalle</button>
+    <div class="poster-wrap">
+      <img [src]="peliculaRecibida.imagen" [alt]="peliculaRecibida.nombre" />
+      <span class="availability" [class.soon]="!peliculaRecibida.estaDisponible">
+        {{ peliculaRecibida.estaDisponible ? 'EN CARTELERA' : 'PRÓXIMAMENTE' }}
+      </span>
+      <span class="age-rating">+{{ peliculaRecibida.clasificacionEdad }}</span>
+    </div>
+    <div class="card-content">
+      <div class="movie-meta">
+        <span>{{ peliculaRecibida.genero }}</span>
+        <span>{{ peliculaRecibida.duracion }} min</span>
+      </div>
+      <h2>{{ peliculaRecibida.nombre }}</h2>
+      <p class="movie-synopsis">{{ peliculaRecibida.sinopsis }}</p>
+      <button (click)="emitirSeleccion()">Ver detalle <span aria-hidden="true">→</span></button>
     </div>
   </div>
 </article>

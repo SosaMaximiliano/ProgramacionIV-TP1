@@ -1,54 +1,39 @@
-import { Service, inject } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Pelicula } from '../models/pelicula.model';
+import { getSupabaseClient } from './supabase.client';
 
-@Service()
+@Injectable({ providedIn: 'root' })
 export class PeliculaService {
-  //Utilizo el modelo de Pelicula para crear un array de peliculas
-  peliculas: Pelicula[] = [
-    {
-      id: 1,
-      nombre: 'Interestelar',
-      imagen: 'assets/images/interestelar.jpg',
-      sinopsis: 'Un grupo de astronautas busca un nuevo hogar para la humanidad.',
-      duracion: 169,
-      genero: 'Ciencia ficción',
-      clasificacionEdad: 13,
-      fechaEstreno: '',
-      estaDisponible: true,
-    },
-    {
-      id: 2,
-      nombre: 'El Padrino',
-      imagen: 'assets/images/el-padrino.jpg',
-      sinopsis: 'La historia de una poderosa familia dedicada al crimen organizado.',
-      duracion: 175,
-      genero: 'Drama',
-      clasificacionEdad: 18,
-      fechaEstreno: '',
-      estaDisponible: false,
-    },
-    {
-      id: 3,
-      nombre: 'El Padrino II',
-      imagen: 'assets/images/el-padrino.jpg',
-      sinopsis: 'La historia de una poderosa familia dedicada al crimen organizado.',
-      duracion: 175,
-      genero: 'Drama',
-      clasificacionEdad: 18,
-      fechaEstreno: '',
-      estaDisponible: false,
-    },
-  ];
-
-  obtenerPeliculas(): Pelicula[] {
-    return this.peliculas;
+  async obtenerPeliculas(): Promise<Pelicula[]> {
+    const supabase = await getSupabaseClient();
+    const { data, error } = await supabase.from('peliculas').select('*').order('id');
+    if (error) throw error;
+    return (data ?? []).map((fila) => this.convertirPelicula(fila));
   }
 
-  obtenerPeliculaPorId(id: number): Pelicula | undefined {
-    return this.peliculas.find((p) => p.id === id);
+  async obtenerPeliculaPorId(id: number): Promise<Pelicula | undefined> {
+    const supabase = await getSupabaseClient();
+    const { data, error } = await supabase.from('peliculas').select('*').eq('id', id).maybeSingle();
+    if (error) throw error;
+    return data ? this.convertirPelicula(data) : undefined;
   }
 
-  obtenerNombrePeliculaPorId(id: number): string | undefined {
-    return this.peliculas.find((p) => p.id === id)?.nombre;
+  async obtenerNombrePeliculaPorId(id: number): Promise<string | undefined> {
+    const pelicula = await this.obtenerPeliculaPorId(id);
+    return pelicula?.nombre;
+  }
+
+  private convertirPelicula(fila: any): Pelicula {
+    return {
+      id: fila.id,
+      nombre: fila.nombre,
+      imagen: fila.imagen,
+      sinopsis: fila.sinopsis,
+      duracion: fila.duracion,
+      genero: fila.genero,
+      clasificacionEdad: fila.clasificacion_edad,
+      fechaEstreno: fila.fecha_estreno ?? '',
+      estaDisponible: fila.esta_disponible,
+    };
   }
 }

@@ -1,11 +1,26 @@
-<nav class="navbar sticky-top bg-dark p-3">
-  <div class="container-fluid d-flex justify-content-start">
-    <form class="container-fluid">
-      <!-- La directiva routerLink le pasa el valor al array de rutas para ver si matchea con alguna dirección -->
-      <button class="btn btn-success me-2" type="button" routerLink="/inicio">Inicio</button>
-      <button class="btn btn-success me-2" type="button" routerLink="/peliculas">Películas</button>
-      <button class="btn btn-success me-2" type="button">Boton 3</button>
-      <button class="btn btn-success me-2" type="button">Boton 4</button>
-    </form>
+<nav class="cine-navbar">
+  <div class="navbar-inner">
+    <a class="brand" routerLink="/inicio" aria-label="Cinéfila, inicio">
+      <span class="brand-mark" aria-hidden="true">✦</span>
+      <span class="brand-name">CINÉFILA</span>
+    </a>
+
+    <div class="nav-links" aria-label="Navegación principal">
+      <a class="nav-link" routerLink="/inicio">Inicio</a>
+      <a class="nav-link" routerLink="/peliculas">Cartelera</a>
+    </div>
+
+    <div class="nav-actions">
+      @if (authService.usuarioActual()) {
+        <span class="nav-user">{{ authService.usuarioActual()?.email }}</span>
+        <button class="nav-cta" type="button" (click)="cerrarSesion()">Salir</button>
+      } @else {
+        <a class="nav-login" routerLink="/login">Ingresar</a>
+        <a class="nav-cta" routerLink="/registro">Crear cuenta</a>
+      }
+    </div>
   </div>
+  @if (mensaje) {
+    <p class="nav-error" role="alert">{{ mensaje }}</p>
+  }
 </nav>

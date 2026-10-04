@@ -1,1 +1,59 @@
-<p>registro works!</p>
+<section class="auth-page">
+  <div class="auth-card register-card">
+    <span class="auth-mark" aria-hidden="true">✦</span>
+    <span class="section-kicker">SUMATE A CINÉFILA</span>
+    <h1>Creá tu cuenta</h1>
+    <p>Creá tu perfil y recibí un 20 % de descuento en tu primera compra.</p>
+    @if (registroCompletado) {
+      <p class="auth-message success-message" role="status">{{ mensaje }}</p>
+      <a class="guest-link" routerLink="/login">Ir a iniciar sesión <span aria-hidden="true">→</span></a>
+    } @else {
+      <form class="auth-form register-form" (ngSubmit)="registrarse()">
+        <label class="form-field">
+          Correo electrónico
+          <input type="email" name="email" [(ngModel)]="perfil.email" autocomplete="email" required />
+        </label>
+        <label class="form-field">
+          Nombre
+          <input type="text" name="nombre" [(ngModel)]="perfil.nombre" autocomplete="given-name" required />
+        </label>
+        <label class="form-field">
+          Apellido
+          <input type="text" name="apellido" [(ngModel)]="perfil.apellido" autocomplete="family-name" required />
+        </label>
+        <label class="form-field">
+          Fecha de nacimiento
+          <input type="date" name="fechaNacimiento" [(ngModel)]="perfil.fechaNacimiento" autocomplete="bday" required />
+        </label>
+        <label class="form-field">
+          Tipo de sangre
+          <input type="text" name="tipoSangre" [(ngModel)]="perfil.tipoSangre" placeholder="Ej. O+" required />
+        </label>
+        <label class="form-field">
+          Color de ojos
+          <input type="text" name="colorOjos" [(ngModel)]="perfil.colorOjos" required />
+        </label>
+        <label class="form-field">
+          Días de vacaciones al año
+          <input type="number" name="diasVacaciones" [(ngModel)]="perfil.diasVacaciones" min="0" required />
+        </label>
+        <label class="form-field">
+          Contraseña
+          <input type="password" name="password" [(ngModel)]="password" autocomplete="new-password" minlength="8" required />
+        </label>
+        <label class="form-field">
+          Repetir contraseña
+          <input type="password" name="repetirPassword" [(ngModel)]="repetirPassword" autocomplete="new-password" minlength="8" required />
+        </label>
+        @if (mensaje) {
+          <p class="auth-message" role="alert">{{ mensaje }}</p>
+        }
+        <button class="auth-submit" type="submit" [disabled]="procesando">
+          {{ procesando ? 'Creando cuenta…' : 'Crear cuenta y obtener descuento' }}
+        </button>
+      </form>
+      <p class="auth-switch">¿Ya tenés cuenta? <a routerLink="/login">Iniciá sesión</a></p>
+    }
+    <a class="guest-link" routerLink="/peliculas">Seguir como invitado <span aria-hidden="true">→</span></a>
+  </div>
+</section>
