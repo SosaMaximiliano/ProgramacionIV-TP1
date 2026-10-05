@@ -25,6 +25,75 @@
     </div>
   }
 
+  <section class="reviews-section">
+    <div class="reviews-heading">
+      <div>
+        <span class="section-kicker">OPINIONES</span>
+        <h2>Reseñas</h2>
+      </div>
+
+      @if (resenas().length > 0) {
+        <p class="reviews-average">
+          <strong>★ {{ promedioResenas() | number: '1.1-1' }}</strong>
+          <span>{{ resenas().length }} reseñas</span>
+        </p>
+      } @else {
+        <p class="reviews-average">Todavía no hay reseñas.</p>
+      }
+    </div>
+
+    @if (authService.usuarioActual()) {
+      <form class="review-form" [formGroup]="formResena" (ngSubmit)="guardarResena()">
+        <label for="puntuacion">Tu puntuación</label>
+        <select id="puntuacion" formControlName="puntuacion">
+          <option [value]="5">5 estrellas</option>
+          <option [value]="4">4 estrellas</option>
+          <option [value]="3">3 estrellas</option>
+          <option [value]="2">2 estrellas</option>
+          <option [value]="1">1 estrella</option>
+        </select>
+
+        <label for="comentario">Comentario (opcional)</label>
+        <textarea
+          id="comentario"
+          formControlName="comentario"
+          rows="4"
+          maxlength="500"
+          placeholder="¿Qué te pareció la película?"
+        ></textarea>
+
+        <button type="submit" [disabled]="formResena.invalid || guardandoResena()">
+          {{ guardandoResena() ? 'Guardando...' : 'Publicar reseña' }}
+        </button>
+      </form>
+    } @else {
+      <p class="review-login-message">Iniciá sesión para dejar una reseña.</p>
+    }
+
+    <p class="review-message" aria-live="polite">{{ mensajeResena() }}</p>
+
+    @if (errorResenas()) {
+      <p class="reviews-error">{{ errorResenas() }}</p>
+    } @else if (resenas().length > 0) {
+      <div class="reviews-list">
+        @for (resena of resenas(); track resena.id) {
+          <article class="review-card">
+            <div class="review-card-heading">
+              <strong>Usuario</strong>
+              <span>{{ resena.puntuacion }} / 5 ★</span>
+            </div>
+
+            @if (resena.comentario) {
+              <p>{{ resena.comentario }}</p>
+            } @else {
+              <p class="review-no-comment">Sin comentario.</p>
+            }
+          </article>
+        }
+      </div>
+    }
+  </section>
+
   @if (funciones().length > 0) {
     <section class="showtimes-section">
       <div class="showtimes-heading">

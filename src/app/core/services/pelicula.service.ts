@@ -57,4 +57,25 @@ export class PeliculaService {
       fechaCreacion: fila.fecha_creacion,
     }));
   }
+
+  async guardarResena(
+    peliculaId: number,
+    usuarioId: string,
+    puntuacion: number,
+    comentario: string,
+  ): Promise<void> {
+    const supabase = await getSupabaseClient();
+
+    const { error } = await supabase.from('resenas').upsert(
+      {
+        pelicula_id: peliculaId,
+        usuario_id: usuarioId,
+        puntuacion,
+        comentario: comentario.trim() || null,
+      },
+      { onConflict: 'pelicula_id,usuario_id' },
+    );
+
+    if (error) throw error;
+  }
 }

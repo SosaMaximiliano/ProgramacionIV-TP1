@@ -204,3 +204,146 @@
     padding: 11px;
   }
 }
+.reviews-section {
+  padding: 38px 0 12px;
+  border-bottom: 1px solid var(--cine-border);
+}
+
+.reviews-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.reviews-heading h2 {
+  margin: 8px 0 0;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.reviews-average {
+  display: grid;
+  gap: 4px;
+  margin: 0;
+  color: var(--cine-muted);
+  font-size: 12px;
+  text-align: right;
+}
+
+.reviews-average strong {
+  color: var(--cine-gold);
+  font-size: 21px;
+}
+
+.reviews-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 12px;
+}
+
+.review-card {
+  padding: 17px;
+  border: 1px solid var(--cine-border);
+  border-radius: 12px;
+  background: var(--cine-surface);
+}
+
+.review-card-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.review-card-heading strong {
+  color: var(--cine-text);
+  font-size: 13px;
+}
+
+.review-card-heading span {
+  color: var(--cine-gold);
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.review-card p {
+  margin: 12px 0 0;
+  color: var(--cine-muted);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.review-card .review-no-comment {
+  font-style: italic;
+}
+
+.reviews-error {
+  color: #ff9b9b;
+  font-size: 13px;
+}
+
+@media (max-width: 650px) {
+  .reviews-heading {
+    align-items: flex-start;
+  }
+
+  .reviews-average strong {
+    font-size: 18px;
+  }
+}
+.review-form {
+  display: grid;
+  max-width: 560px;
+  gap: 10px;
+  margin: 24px 0;
+}
+
+.review-form label {
+  color: var(--cine-text);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.review-form select,
+.review-form textarea {
+  width: 100%;
+  padding: 11px 12px;
+  border: 1px solid var(--cine-border);
+  border-radius: 8px;
+  background: var(--cine-surface);
+  color: var(--cine-text);
+  font: inherit;
+}
+
+.review-form textarea {
+  resize: vertical;
+}
+
+.review-form button {
+  justify-self: start;
+  padding: 10px 15px;
+  border: 1px solid rgba(242, 189, 85, 0.35);
+  border-radius: 8px;
+  background: rgba(242, 189, 85, 0.1);
+  color: var(--cine-gold-light);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.review-form button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.review-login-message,
+.review-message {
+  color: var(--cine-muted);
+  font-size: 13px;
+}
+
+.review-message:empty {
+  display: none;
+}
