@@ -9,13 +9,16 @@ import { Sala } from '../../core/models/sala.model';
 import { ButacaFuncionService } from '../../core/services/butaca-funcion.service';
 import { PeliculaService } from '../../core/services/pelicula.service';
 import { EntradaService } from './entrada.service';
-import { Entrada, EstadoEntrada } from '../../core/models/entrada.model';
+import { Entrada } from '../../core/models/entrada.model';
 import { CurrencyPipe } from '@angular/common';
 import { Venta, FormaPago } from '../../core/models/venta.model';
 import { VentaService } from '../../core/services/venta.service';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AuthService } from '../../core/services/auth.service';
+import { edadMinimaValidator } from '../../core/validators/edad-minima';
 
 @Component({
-  imports: [CurrencyPipe],
+  imports: [CurrencyPipe, ReactiveFormsModule],
   selector: 'app-compra',
   styleUrl: './compra.component.css',
   templateUrl: './compra.component.html',
@@ -23,16 +26,24 @@ import { VentaService } from '../../core/services/venta.service';
 export class Compra {
   funcionId!: number;
   funcion?: Funcion;
-  filasButacas: FilaButacas[] = [];
+  filasButacas = signal<FilaButacas[]>([]);
   sala?: Sala;
   butacasOcupadas = signal<number[]>([]);
   butacasSeleccionadas = signal<Butaca[]>([]);
+  pagoProcesando = signal(false);
+  errorPago = signal('');
   peliculaId!: number;
   nombrePelicula: string | undefined = '';
   errorCarga = '';
+  descuentoBienvenida = signal(0);
   detalle: any = null;
   entradas: Entrada[] = [];
   ventaCreada: Venta | null = null;
+  edadMinima = signal(0);
+  fechaNacimientoPerfil = signal<string | null>(null);
+  formularioEdad = new FormGroup({
+    fechaNacimiento: new FormControl('', { nonNullable: true }),
+  });
 
   constructor(
     private route: ActivatedRoute,
@@ -43,6 +54,7 @@ export class Compra {
     private peliculaService: PeliculaService,
     private entradaService: EntradaService,
     private ventaService: VentaService,
+    private authService: AuthService,
   ) {}
 
   ngOnInit(): void {
@@ -71,12 +83,42 @@ export class Compra {
       }
 
       //Las butacas se generan con la distribución configurada para la sala.
-      this.filasButacas = this.butacaService.obtenerButacasDeSala(this.sala);
+      this.filasButacas.set(this.butacaService.obtenerButacasDeSala(this.sala));
 
       //Por ahora la ocupación todavía se conserva localmente.
-      this.butacasOcupadas.set(this.butacaFuncionService.obtenerButacasOcupadas(this.funcionId));
+      this.butacasOcupadas.set(
+        await this.butacaFuncionService.obtenerButacasOcupadas(this.funcionId, this.filasButacas()),
+      );
 
-      this.nombrePelicula = await this.peliculaService.obtenerNombrePeliculaPorId(this.peliculaId);
+      const pelicula = await this.peliculaService.obtenerPeliculaPorId(this.peliculaId);
+      this.nombrePelicula = pelicula?.nombre;
+      this.edadMinima.set(pelicula?.clasificacionEdad ?? 0);
+
+      if (this.edadMinima() > 0) {
+        const control = this.formularioEdad.controls.fechaNacimiento;
+
+        control.setValidators([Validators.required, edadMinimaValidator(this.edadMinima())]);
+        control.updateValueAndValidity();
+
+        try {
+          const fechaPerfil = await this.authService.obtenerFechaNacimientoActual();
+          this.fechaNacimientoPerfil.set(fechaPerfil);
+
+          if (fechaPerfil) {
+            control.setValue(fechaPerfil);
+          }
+        } catch {
+          this.fechaNacimientoPerfil.set(null);
+        }
+      }
+
+      try {
+        this.descuentoBienvenida.set(
+          await this.ventaService.obtenerDescuentoBienvenidaDisponible(),
+        );
+      } catch {
+        this.descuentoBienvenida.set(0);
+      }
     } catch {
       this.errorCarga = 'No pudimos cargar la función. Revisá la conexión con Supabase.';
     }
@@ -87,7 +129,7 @@ export class Compra {
   }
 
   seleccionarButaca(butaca: Butaca) {
-    if (this.estaOcupada(butaca.id)) return;
+    if (this.ventaCreada || this.estaOcupada(butaca.id)) return;
 
     this.butacasSeleccionadas.update((s) => {
       const yaSeleccionada = s.some((b) => b.id === butaca.id);
@@ -100,6 +142,11 @@ export class Compra {
   }
 
   continuarCompra() {
+    if (this.edadMinima() > 0 && this.formularioEdad.invalid) {
+      this.formularioEdad.markAllAsTouched();
+      return;
+    }
+
     if (this.ventaCreada || !this.funcion || this.butacasSeleccionadas().length === 0) {
       return;
     }
@@ -118,7 +165,12 @@ export class Compra {
       );
     });
 
-    this.ventaCreada = this.ventaService.crearVenta(clienteId, this.entradas, FormaPago.Efectivo);
+    this.ventaCreada = this.ventaService.crearVenta(
+      clienteId,
+      this.entradas,
+      FormaPago.Efectivo,
+      this.descuentoBienvenida(),
+    );
 
     this.entradas.forEach((e) => {
       e.ventaId = this.ventaCreada!.id;
@@ -144,22 +196,52 @@ export class Compra {
     return this.detalle;
   }
 
-  confirmarPago(): void {
-    if (!this.ventaCreada || this.ventaCreada.estaPagado) {
+  cancelarCompra(): void {
+    if (!this.ventaCreada || this.ventaCreada.estaPagado || this.pagoProcesando()) return;
+
+    this.ventaService.cancelarVenta(this.ventaCreada.id);
+    this.entradaService.cancelarEntradas(this.entradas.map((entrada) => entrada.id));
+
+    this.ventaCreada = null;
+    this.entradas = [];
+    this.butacasSeleccionadas.set([]);
+  }
+
+  async confirmarPago(): Promise<void> {
+    if (
+      !this.ventaCreada ||
+      this.ventaCreada.estaPagado ||
+      this.ventaCreada.estaCancelada ||
+      this.pagoProcesando()
+    ) {
       return;
     }
 
-    this.ventaCreada.estaPagado = true;
+    if (this.edadMinima() > 0 && this.formularioEdad.invalid) {
+      this.formularioEdad.markAllAsTouched();
+      return;
+    }
 
-    this.entradas.forEach((e) => {
-      e.estadoEntrada = EstadoEntrada.Emitida;
-    });
+    this.pagoProcesando.set(true);
+    this.errorPago.set('');
 
-    this.butacaFuncionService.ocuparButacas(
-      this.funcionId,
-      this.butacasSeleccionadas().map((b) => b.id),
-    );
-
-    this.butacasOcupadas.set(this.butacaFuncionService.obtenerButacasOcupadas(this.funcionId));
+    try {
+      await this.ventaService.confirmarEnSupabase(
+        this.ventaCreada,
+        this.funcionId,
+        this.butacasSeleccionadas(),
+      );
+      this.entradas = [...this.ventaCreada.entradas];
+      this.butacasOcupadas.update((ocupadas) => [
+        ...ocupadas,
+        ...this.butacasSeleccionadas().map((butaca) => butaca.id),
+      ]);
+    } catch {
+      this.errorPago.set(
+        'No pudimos confirmar la compra. Puede que alguna butaca ya se haya ocupado; actualizá el mapa e intentá de nuevo.',
+      );
+    } finally {
+      this.pagoProcesando.set(false);
+    }
   }
 }

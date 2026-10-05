@@ -13,6 +13,7 @@
     <div class="nav-actions">
       @if (authService.usuarioActual()) {
         <span class="nav-user">{{ authService.usuarioActual()?.email }}</span>
+        <a class="nav-login" routerLink="/mis-compras">Mis compras</a>
         <button class="nav-cta" type="button" (click)="cerrarSesion()">Salir</button>
       } @else {
         <a class="nav-login" routerLink="/login">Ingresar</a>

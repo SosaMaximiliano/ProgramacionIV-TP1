@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Pelicula } from '../models/pelicula.model';
 import { getSupabaseClient } from './supabase.client';
+import { Resena } from '../models/resena.model';
 
 @Injectable({ providedIn: 'root' })
 export class PeliculaService {
@@ -35,5 +36,25 @@ export class PeliculaService {
       fechaEstreno: fila.fecha_estreno ?? '',
       estaDisponible: fila.esta_disponible,
     };
+  }
+
+  async obtenerResenasPorPelicula(peliculaId: number): Promise<Resena[]> {
+    const supabase = await getSupabaseClient();
+
+    const { data, error } = await supabase
+      .from('resenas')
+      .select('id, usuario_id, puntuacion, comentario, fecha_creacion')
+      .eq('pelicula_id', peliculaId)
+      .order('fecha_creacion', { ascending: false });
+
+    if (error) throw error;
+
+    return (data ?? []).map((fila) => ({
+      id: fila.id,
+      usuarioId: fila.usuario_id,
+      puntuacion: fila.puntuacion,
+      comentario: fila.comentario,
+      fechaCreacion: fila.fecha_creacion,
+    }));
   }
 }

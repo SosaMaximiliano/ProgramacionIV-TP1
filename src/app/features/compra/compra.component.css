@@ -201,11 +201,69 @@
   padding: 22px;
 }
 
+.age-check {
+  margin: 14px 0 20px;
+  padding: 16px;
+  border: 1px solid rgba(107, 212, 208, 0.24);
+  border-radius: 12px;
+  background: rgba(107, 212, 208, 0.055);
+}
+
+.age-check h2 {
+  margin: 0 0 7px;
+  color: #a4e6e1;
+  font-size: 14px;
+}
+
+.age-check > p {
+  margin: 7px 0;
+  color: var(--cine-muted);
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.age-check form {
+  margin-top: 13px;
+}
+
+.age-check .form-field {
+  display: grid;
+  gap: 7px;
+  color: var(--cine-muted);
+  font-size: 11px;
+}
+
+.age-check input[type='date'] {
+  width: 100%;
+  padding: 10px 11px;
+  border: 1px solid var(--cine-border);
+  border-radius: 8px;
+  background: #0d1118;
+  color: var(--cine-text);
+  color-scheme: dark;
+}
+
+.age-check .payment-error {
+  margin: 8px 0 0;
+}
+
 .order-panel h2 {
   margin: 10px 0 13px;
   font-family: 'Segoe UI', Arial, sans-serif;
   font-size: 18px;
   font-weight: 700;
+}
+
+.order-panel button {
+  max-width: 200px;
+  margin: 5px;
+}
+
+.botones-operacion {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
 }
 
 .order-hint,
@@ -259,8 +317,31 @@
   background: var(--cine-gold-light);
 }
 
+.primary-action:disabled,
+.secondary-action:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+
 .primary-action span {
   font-size: 17px;
+}
+
+.secondary-action {
+  width: 100%;
+  margin-top: 10px;
+  padding: 11px 14px;
+  border: 1px solid var(--cine-border);
+  border-radius: 9px;
+  background: transparent;
+  color: var(--cine-muted);
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.secondary-action:hover {
+  border-color: var(--cine-gold);
+  color: var(--cine-text);
 }
 
 .order-divider {
@@ -277,6 +358,12 @@
 
 .order-showtime {
   margin: 0 0 13px;
+}
+
+.payment-error {
+  margin: 12px 0;
+  color: #ff9b9b;
+  font-size: 12px;
 }
 
 .ticket-list {

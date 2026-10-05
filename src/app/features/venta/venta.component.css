@@ -1,0 +1,132 @@
+.history-page {
+  width: min(960px, calc(100% - 40px));
+  min-height: 70vh;
+  margin: 0 auto;
+  padding: 58px 0 80px;
+}
+
+.history-page > h1 {
+  margin: 0;
+  color: var(--cine-text);
+  font-size: clamp(30px, 5vw, 44px);
+  letter-spacing: -0.04em;
+}
+
+.history-page > p {
+  margin: 10px 0 30px;
+  color: var(--cine-muted);
+  font-size: 14px;
+}
+
+.purchase-list {
+  display: grid;
+  gap: 18px;
+}
+
+.purchase-card {
+  padding: 24px;
+  border: 1px solid var(--cine-border);
+  border-radius: 18px;
+  background: linear-gradient(145deg, rgba(24, 30, 41, 0.96), rgba(17, 21, 29, 0.96));
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.16);
+}
+
+.purchase-card header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--cine-border);
+}
+
+.purchase-card h2 {
+  margin: 0 0 6px;
+  font-size: 18px;
+}
+
+.purchase-card header p {
+  margin: 0;
+  color: var(--cine-muted);
+  font-size: 12px;
+}
+
+.purchase-card header > strong {
+  color: var(--cine-gold-light);
+  font-size: 18px;
+  white-space: nowrap;
+}
+
+.purchase-status {
+  display: inline-flex;
+  margin: 14px 0 4px;
+  padding: 5px 10px;
+  border: 1px solid rgba(242, 189, 85, 0.26);
+  border-radius: 999px;
+  background: rgba(242, 189, 85, 0.08);
+  color: var(--cine-gold-light);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.purchase-card ul {
+  display: grid;
+  gap: 12px;
+  margin: 14px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.purchase-card li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 5px 16px;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.055);
+}
+
+.purchase-card li strong {
+  font-size: 13px;
+}
+
+.purchase-card li span {
+  color: var(--cine-muted);
+  font-size: 12px;
+}
+
+.purchase-card li span:last-child {
+  grid-column: 2;
+  grid-row: 1;
+  color: var(--cine-text);
+  white-space: nowrap;
+}
+
+.purchase-card > p:last-child {
+  margin: 16px 0 0;
+  color: #9be2b8;
+  font-size: 12px;
+}
+
+@media (max-width: 560px) {
+  .history-page {
+    width: min(100% - 28px, 960px);
+    padding-top: 38px;
+  }
+
+  .purchase-card {
+    padding: 18px;
+  }
+
+  .purchase-card header > strong {
+    font-size: 15px;
+  }
+
+  .purchase-card li {
+    grid-template-columns: 1fr;
+  }
+
+  .purchase-card li span:last-child {
+    grid-column: 1;
+    grid-row: auto;
+  }
+}

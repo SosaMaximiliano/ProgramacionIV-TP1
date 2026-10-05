@@ -66,7 +66,9 @@ export class AuthService {
     const supabase = await getSupabaseClient();
     const { data, error } = await supabase
       .from('profiles')
-      .select('id, email, nombre, apellido, fecha_nacimiento, tipo_sangre, color_ojos, dias_vacaciones')
+      .select(
+        'id, email, nombre, apellido, fecha_nacimiento, tipo_sangre, color_ojos, dias_vacaciones',
+      )
       .eq('id', id)
       .single();
 
@@ -82,5 +84,27 @@ export class AuthService {
       colorOjos: data.color_ojos,
       diasVacaciones: data.dias_vacaciones,
     };
+  }
+
+  async obtenerFechaNacimientoActual(): Promise<string | null> {
+    const supabase = await getSupabaseClient();
+
+    const {
+      data: { user },
+      error: errorUsuario,
+    } = await supabase.auth.getUser();
+
+    if (errorUsuario) throw errorUsuario;
+    if (!user) return null;
+
+    const { data: perfil, error } = await supabase
+      .from('profiles')
+      .select('fecha_nacimiento')
+      .eq('id', user.id)
+      .maybeSingle();
+
+    if (error) throw error;
+
+    return perfil?.fecha_nacimiento ?? null;
   }
 }

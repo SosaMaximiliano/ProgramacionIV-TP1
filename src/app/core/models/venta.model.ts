@@ -13,8 +13,11 @@ export interface Venta {
   clienteId: number;
   fechaVenta: string;
   subtotal: number;
+  descuentoPorcentaje: number;
+  descuentoImporte: number;
   precioFinal: number;
   formaPago: FormaPago;
   estaPagado: boolean;
+  estaCancelada: boolean;
   entradas: Entrada[];
 }

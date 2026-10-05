@@ -37,10 +37,19 @@ export class Registro {
     }
 
     this.procesando = true;
+    let temporizador: ReturnType<typeof setTimeout> | undefined;
 
     try {
       const datos: DatosRegistro = { ...this.perfil, password: this.password };
-      const sesionIniciada = await this.authService.registrarse(datos);
+      const sesionIniciada = await Promise.race([
+        this.authService.registrarse(datos),
+        new Promise<never>((_, reject) => {
+          temporizador = setTimeout(
+            () => reject(new Error('La solicitud tardó demasiado. Revisá Supabase antes de volver a intentar.')),
+            20000,
+          );
+        }),
+      ]);
       this.registroCompletado = true;
 
       if (sesionIniciada) {
@@ -48,9 +57,11 @@ export class Registro {
       } else {
         this.mensaje = 'Te enviamos un correo para confirmar la cuenta. Después podrás iniciar sesión.';
       }
-    } catch {
-      this.mensaje = 'No se pudo crear la cuenta. Revisá los datos e intentá nuevamente.';
+    } catch (error) {
+      const detalle = error instanceof Error ? error.message : 'Error desconocido';
+      this.mensaje = `No se pudo completar el registro. ${detalle}`;
     } finally {
+      if (temporizador) clearTimeout(temporizador);
       this.procesando = false;
     }
   }

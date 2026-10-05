@@ -1,1 +1,53 @@
+<section class="history-page">
+  <h1>Mis compras</h1>
+  <p>Consultá tus compras y entradas.</p>
 
+  @if (cargando()) {
+    <p role="status">Cargando tus compras…</p>
+  } @else if (error()) {
+    <p role="alert">{{ error() }}</p>
+  } @else if (ventas().length === 0) {
+    <p>Todavía no realizaste compras.</p>
+  } @else {
+    <div class="purchase-list">
+      @for (venta of ventas(); track venta.id) {
+        <article class="purchase-card">
+          <header>
+            <div>
+              <h2>Compra #{{ venta.id }}</h2>
+              <p>{{ venta.fecha_venta | date: 'dd/MM/yyyy HH:mm' }}</p>
+            </div>
+
+            <strong>{{ venta.precio_final | currency: 'ARS' }}</strong>
+          </header>
+
+          <p class="purchase-status">
+            {{ venta.esta_cancelada ? 'Cancelada' : venta.esta_pagado ? 'Pagada' : 'Pendiente' }}
+          </p>
+
+          <ul>
+            @for (entrada of venta.entradas; track entrada.id) {
+              <li>
+                <strong>{{ entrada.funciones?.peliculas?.nombre || 'Película' }}</strong>
+                <span>
+                  {{ entrada.funciones?.fecha | date: 'dd/MM/yyyy' }}
+                  · {{ entrada.funciones?.hora }} · Fila {{ entrada.fila }}, asiento
+                  {{ entrada.asiento }}
+                </span>
+                <span>{{ entrada.precio | currency: 'ARS' }}</span>
+              </li>
+            }
+          </ul>
+
+          @if (venta.descuento_importe > 0) {
+            <p>
+              Descuento aplicado:
+              {{ venta.descuento_importe | currency: 'ARS' }}
+              ({{ venta.descuento_porcentaje }}%)
+            </p>
+          }
+        </article>
+      }
+    </div>
+  }
+</section>

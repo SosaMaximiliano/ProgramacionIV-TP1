@@ -27,11 +27,11 @@ Para agregar una pantalla, ubicala en la carpeta de su funcionalidad dentro de `
 
 ### Conectar Supabase en desarrollo
 
-1. En el proyecto de Supabase, abrí **SQL Editor** y ejecutá, en orden, `supabase/migrations/20261001000000_create_profiles.sql`, `supabase/migrations/20261001000100_create_catalog.sql`, `supabase/migrations/20261001000200_update_sample_showtime_dates.sql` y `supabase/migrations/20261001000300_expand_catalog.sql`.
+1. En el proyecto de Supabase, abrí **SQL Editor** y ejecutá, en orden, `supabase/migrations/20261001000000_create_profiles.sql`, `supabase/migrations/20261001000100_create_catalog.sql`, `supabase/migrations/20261001000200_update_sample_showtime_dates.sql`, `supabase/migrations/20261001000300_expand_catalog.sql`, `supabase/migrations/20261004000000_create_sales_and_tickets.sql`, `supabase/migrations/20261004000100_apply_welcome_discount.sql` y `supabase/migrations/20261004000200_allow_dashboard_auth_users.sql`.
 2. En **Connect** o **Settings → API Keys**, copiá la Project URL y la Publishable key.
 3. Pegá esos valores en `src/environments/environment.ts` como `supabaseUrl` y `supabasePublishableKey`.
 
-La clave Publishable está pensada para el navegador; el acceso queda limitado por las políticas RLS de la base. No uses una clave Secret o `service_role` en Angular. El catálogo, las salas y las funciones ya se leen desde Supabase. Las ventas y el canje del descuento todavía necesitan migrarse para que el 20 % se aplique y consuma junto con el pago. Las imágenes locales de la cartelera están en `public/images/peliculas/`; sus fuentes se documentan en `public/images/peliculas/FUENTES.md`.
+La clave Publishable está pensada para el navegador; el acceso queda limitado por las políticas RLS de la base. No uses una clave Secret o `service_role` en Angular. El catálogo, las salas, las funciones, las ventas, las entradas y la ocupación de butacas se gestionan con Supabase. Las personas registradas reciben el descuento de bienvenida configurado en el perfil al confirmar su primera compra; las compras como invitado no tienen este beneficio. Las imágenes locales de la cartelera están en `public/images/peliculas/`; sus fuentes se documentan en `public/images/peliculas/FUENTES.md`.
 
 ## Documento de Especificación de Requerimientos de Software (ERS)
 

@@ -29,4 +29,10 @@ export class EntradaService {
     this.entradas.push(entrada);
     return entrada;
   }
+
+  cancelarEntradas(entradaIds: number[]): void {
+    this.entradas
+      .filter((entrada) => entradaIds.includes(entrada.id))
+      .forEach((entrada) => (entrada.estadoEntrada = EstadoEntrada.Cancelada));
+  }
 }

@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "public": "public/browser",
+    "public": "dist/cine-app/browser",
     "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
     "rewrites": [
       {
