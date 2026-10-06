@@ -1,11 +1,11 @@
-import { Injectable } from '@angular/core';
+import { Service } from '@angular/core';
 import { Butaca } from '../models/butaca.model';
 import { EstadoEntrada } from '../models/entrada.model';
 import { Venta, FormaPago } from '../models/venta.model';
 import { Entrada } from '../models/entrada.model';
 import { getSupabaseClient } from './supabase.client';
 
-@Injectable({ providedIn: 'root' })
+@Service()
 export class VentaService {
   private ventas: Venta[] = [];
 

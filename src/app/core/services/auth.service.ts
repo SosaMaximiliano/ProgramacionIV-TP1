@@ -1,9 +1,9 @@
-import { Injectable, signal } from '@angular/core';
+import { Service, signal } from '@angular/core';
 import type { User } from '@supabase/supabase-js';
 import { DatosRegistro, Usuario } from '../models/usuario.model';
 import { getSupabaseClient, isSupabaseConfigured } from './supabase.client';
 
-@Injectable({ providedIn: 'root' })
+@Service()
 export class AuthService {
   readonly usuarioActual = signal<User | null>(null);
 

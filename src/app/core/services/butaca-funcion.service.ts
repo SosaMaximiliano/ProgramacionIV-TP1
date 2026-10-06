@@ -1,8 +1,8 @@
-import { Injectable } from '@angular/core';
+import { Service } from '@angular/core';
 import { FilaButacas } from '../models/butaca.model';
 import { getSupabaseClient } from './supabase.client';
 
-@Injectable({ providedIn: 'root' })
+@Service()
 export class ButacaFuncionService {
   async obtenerButacasOcupadas(funcionId: number, filas: FilaButacas[]): Promise<number[]> {
     const supabase = await getSupabaseClient();
